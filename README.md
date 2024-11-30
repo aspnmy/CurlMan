@@ -14,7 +14,7 @@ www.example.com
 - 然后在你的服务器下运行下面这个代码,记得使用root权限,运行前确保已经安装了curl组件
 
 ```
-curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/master/CurlManMaster.sh -o CurlManMaster.sh  && bash CurlManMaster.sh
+curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/CurlManMaster.sh -o CurlManMaster.sh  && bash CurlManMaster.sh
 ```
 
 - 运行脚本后会保存一个content.logs文件,文件中能正确显示网站代码的为正确拨测
@@ -24,9 +24,9 @@ curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/master/Cur
 
 - 使用下面的脚本运行拨测脚本主体,生成一个CurlMan.logs的文件
 ```
-curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/master/CurlManMaster.sh -o CurlManMaster.sh  && bash CurlManMaster.sh
+curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/CurlManMaster.sh -o CurlManMaster.sh  && bash CurlManMaster.sh
 ```
 - 然后按下面的命令运行日志验证脚本(Verify_CurlManlogs.sh),会自动对日志中的关键词进行提取,生成一个url 一个关键词的列表,代表是正确测通的域名
 ```
-curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/master/Verify_CurlManlogs.sh -o Verify_CurlManlogs.sh  && bash Verify_CurlManlogs.sh
+curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/Verify_CurlManlogs.sh -o Verify_CurlManlogs.sh  && bash Verify_CurlManlogs.sh
 ```
