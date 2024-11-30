@@ -86,8 +86,10 @@ if [ -s "$PROXY_LIST" ]; then
     log "代理列表文件存在，将使用代理进行拨测."
     while IFS= read -r proxy; do
         if [ -z "$proxy" ]; then
+            log "proxy忽略：跳过空行。"
             continue
         fi
+
         log "使用代理 $proxy 进行拨测..."
         while IFS= read -r url; do
             process_url "$url" "$proxy"
@@ -96,6 +98,11 @@ if [ -s "$PROXY_LIST" ]; then
 else
     log "警告：代理列表文件不存在或为空，将使用本地设备进行访问."
     while IFS= read -r url; do
+        if [ -z "$url" ]; then
+            log "url忽略：跳过空行。"
+            continue
+        fi
+        echo "url-lists:$URLS_FILE"
         process_url "$url" ""
     done < "$URLS_FILE"
 fi
