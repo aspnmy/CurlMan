@@ -65,4 +65,4 @@ nohup python3 "${WebLogsPATH}/web_serve.py" > "${LogsPATH}/server.log" 2>&1 &
 
 # 记录服务器启动信息
 log "Web服务器已启动，正在端口7988上托管content.json文件。"
-log "访问 http://localhost:7988/content.json 查看文件。"
+log "访问 http://localhost:7988/web_logs/content.json 查看文件。"
