@@ -23,9 +23,13 @@ curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/CurlM
 
 
 ### 2、关键词批量拨测：
-- 首先你先在自己的网站首页中插入一个约定的关键词
+- 首先你先在自己的网站首页中插入一个约定的关键词,比如
+```
+<meta name="Aspnmy-CurlManMaster-Verification" content="输入需要被验证的关键词" />
+```
+- 将以下代码添加到您的网站首页HTML代码的<head>标签与</head>标签之间,更新缓存以后
 
-- 使用下面的脚本运行拨测脚本主体,生成一个CurlMan.logs的文件
+- 使用下面的脚本运行拨测脚本主体,生成一个运行脚本后会保存一个content.logs的文件
 ```
 curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/CurlManMaster.sh -o CurlManMaster.sh  && bash CurlManMaster.sh
 ```
@@ -33,14 +37,10 @@ curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/CurlM
 ```
 curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/Verify_CurlManlogs.sh -o Verify_CurlManlogs.sh  && bash Verify_CurlManlogs.sh
 ```
-- 比如通过meta标签进行关键词验证又不影响seo测量的放射
-  将以下代码添加到您的网站首页HTML代码的<head>标签与</head>标签之间,更新缓存以后运行上方的CurlManMaster.sh重新更新content.log文件,由于不会覆盖记录原来的记录记得自己删除或者改写一下代码比如按照日期保存.
+CurlManMaster.sh重新更新content.log文件,由于不会覆盖记录原来的记录记得自己删除或者改写一下代码比如按照日期保存.
 - 然后运行Verify_CurlManlogs.sh,这个脚本会自动搜索满足下方关键词条件的数据进行验证
 - 如果验证的关键词较多,请生成一个Verification-Code.txt的文件,一个关键词一条,比如：(验证用的关键词尽量选择没用意义的随机字符串)
 ```
 XCsd@sda!!
 Xdsd@sd!TT
-```
-```
-<meta name="Aspnmy-CurlManMaster-Verification" content="输入需要被验证的关键词" />
 ```
