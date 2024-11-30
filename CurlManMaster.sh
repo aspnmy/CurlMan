@@ -36,6 +36,8 @@ if [ ! -f "$URLS_FILE" ]; then
     exit 1
 fi
 
+JSON_OUTPUT="${CURRENT_DIR}/content.json"
+
 # 读取urls.txt文件中的每个URL并执行curl命令
 while IFS= read -r url; do
     if [ -z "$url" ]; then
@@ -48,8 +50,11 @@ while IFS= read -r url; do
         log "成功：获取 $url 的内容成功。"
         # 提取<head>标签的内容
         head_content=$(echo "$content" | grep -E '<[^>]*head[^>]*>' | sed 's/<head>/<head>\n/g' | sed 's/<\/head>/<\/head>\n/g' | sed -n '/<head>/,/<\/head>/p')
-        echo "<head>内容如下："
-        echo "$url|对应的key是|$head_content" | tee -a "${CURRENT_DIR}/content.log"
+        # 构造JSON对象并追加到content.json
+        if [ -z "$head_content" ]; then
+            head_content="No head content found"
+        fi
+        echo "{\"url\":\"$url\",\"head\":\"$head_content\"}" | tee -a "$JSON_OUTPUT"
     else
         log "失败：获取 $url 的内容失败。"
     fi
