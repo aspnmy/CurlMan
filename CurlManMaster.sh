@@ -15,6 +15,7 @@ WebLogsPATH="${CURRENT_DIR}/web_logs"
 ConfigPATH="${CURRENT_DIR}/config"
 LogsPATH="${CURRENT_DIR}/logs"
 
+
 function log() {
     message="[Aspnmy Log]: $1"
     case "$1" in
@@ -58,9 +59,10 @@ while IFS= read -r url; do
         if [ -z "$head_content" ]; then
             head_content="No head content found"
         fi
-        echo "{\"url\":\"$url\",\"head\":\"$head_content\"}" | tee -a "$JSON_OUTPUT"
+        echo "{\"url\":\"$url\",\"head\":\"$head_content\",\"title\":\"isOKK\",\"err_code\":\"1001\"}" | tee -a "$JSON_OUTPUT"
     else
-        log "失败：获取 $url 的内容失败。"
+        echo "{\"url\":\"\",\"head\":\"\",\"title\":\"isOFF\",\"err_code\":\"1002\"}" | tee -a "$JSON_OUTPUT"
+        log "失败：获取 $url 的内容失败。错误码:1002"
     fi
     echo "-----"
 done < "$URLS_FILE"
