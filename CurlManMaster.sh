@@ -84,7 +84,8 @@ fi
 PROXY_LIST="$ConfigPATH/proxies.txt"
 if [ -s "$PROXY_LIST" ]; then
     log "代理列表文件存在，将使用代理进行拨测."
-    while IFS= read -r proxy; do
+
+    while IFS= read -r proxy || [ -n "$proxy" ];do
         if [ -z "$proxy" ]; then
             log "proxy忽略：跳过空行。"
             continue
@@ -97,7 +98,7 @@ if [ -s "$PROXY_LIST" ]; then
     done < "$PROXY_LIST"
 else
     log "警告：代理列表文件不存在或为空，将使用本地设备进行访问."
-    while IFS= read -r url; do
+    while IFS= read -r url || [ -n "$url" ]; do
         if [ -z "$url" ]; then
             log "url忽略：跳过空行。"
             continue
