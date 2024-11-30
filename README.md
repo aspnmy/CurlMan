@@ -52,7 +52,7 @@ Xdsd@sd!TT
 - 5.然后浏览器运行http://IP:7988/content.json 来访问日志文件
 - 6.推荐仅在内网访问,如需使用外网访问,请用nginx规则进行文件托管
 - 7.以宝塔面板为例子,把weblogs/ 整个目录设置成网站根目录,设置https证书即可访问拨测日志,使用宝塔的话请删除weblogs/web_serve.py文件保证安全性
-### 4.使用APi模式进行拨测
+### 4.使用APi模式进行拨测(更多,请访问Telegram群组进行咨询)
 - 1.首先启动runWebLogs.sh,http://IP:7988/content.json能正常访问
 - 2.访问群组或者私库拉取Api管理器项目,会增加一个Api目录组件,并配置访问密钥,默认是随机8位字符24小时失效匿名服务
 - 3.然后浏览器运行http://IP:7988/Api 正确则返回201错误码
@@ -65,7 +65,7 @@ post http://IP:7988/Api -key xxxx-xxxxx -urls {"url1","url2"......"urln"} -ips {
 - -urls 需要拨测是域名列表
 - -ips 需要使用的代理列表(使用-ips命令的时候,先要确认该ip具有代理权)
 
-### 5.使用Telegram进行管理
+### 5.使用Telegram进行管理(更多,请访问Telegram群组进行咨询)
 - 1.首先注册一个bot
 - 2.git我们的go语言编译的跨平台Aspnmy_Telegram_bot开发框架
 - 3.在Config中配置bot的key
