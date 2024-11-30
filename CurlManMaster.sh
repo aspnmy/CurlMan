@@ -52,7 +52,7 @@ function fetch_url() {
     local url=$1
     local proxy=$2
     if [ -n "$proxy" ]; then
-        curl -x "$proxy" -sSL "$url"
+        curl -x "http://$proxy" -sSL "$url"
     else
         curl -sSL "$url"
     fi
