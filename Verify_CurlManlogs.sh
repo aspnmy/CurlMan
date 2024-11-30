@@ -9,28 +9,30 @@ CURRENT_DIR=$(
     cd "$(dirname "$0")" || exit
     pwd
 )
-
+WebLogsPATH="${CURRENT_DIR}/web_logs"
+ConfigPATH="${CURRENT_DIR}/config"
+LogsPATH="${CURRENT_DIR}/logs"
 function log() {
     message="[Aspnmy Log]: $1"
     case "$1" in
         *"失败"*|*"错误"*|*"请使用 root 或 sudo 权限运行此脚本"*)
-            echo -e "${RED}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}/CurlMan.log"
+            echo -e "${RED}${message}${NC}" 2>&1 | tee -a "${LogsPATH}/CurlMan.log"
             ;;
         *"成功"*)
-            echo -e "${GREEN}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}/CurlMan.log"
+            echo -e "${GREEN}${message}${NC}" 2>&1 | tee -a "${LogsPATH}/CurlMan.log"
             ;;
         *"忽略"*|*"跳过"*)
-            echo -e "${YELLOW}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}/CurlMan.log"
+            echo -e "${YELLOW}${message}${NC}" 2>&1 | tee -a "${LogsPATH}/CurlMan.log"
             ;;
         *)
-            echo -e "${BLUE}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}/CurlMan.log"
+            echo -e "${BLUE}${message}${NC}" 2>&1 | tee -a "${LogsPATH}/CurlMan.log"
             ;;
     esac
 }
 
 # 设置日志文件和关键词文件路径
-LOG_FILE="content.log"
-KEYWORD_FILE="Verification-Code.txt"
+LOG_FILE="${LogsPATH}/content.log"
+KEYWORD_FILE="${ConfigPATH}/Verification-Code.txt"
 
 # 检查日志文件是否存在
 if [ ! -f "$LOG_FILE" ]; then
