@@ -11,7 +11,6 @@ CURRENT_DIR=$(
     pwd
 )
 
-
 WebLogsPATH="${CURRENT_DIR}/web_logs"
 ConfigPATH="${CURRENT_DIR}/config"
 LogsPATH="${CURRENT_DIR}/logs"
@@ -39,7 +38,26 @@ if [ ! -d "$WebLogsPATH" ]; then
     mkdir -p "$WebLogsPATH"
 fi
 
+# 检测系统版本并安装Python
+function install_python() {
+    if [ -f /etc/debian_version ]; then
+        # Debian/Ubuntu
+        sudo apt update && sudo apt install -y python3 python3-pip
+    elif [ -f /etc/redhat-release ]; then
+        # CentOS/RHEL
+        sudo yum install -y python3 python3-pip
+    elif [ -f /etc/fedora-release ]; then
+        # Fedora
+        sudo dnf install -y python3 python3-pip
+    else
+        log "错误：不支持的操作系统。"
+        exit 1
+    fi
+    log "成功：Python环境已安装。"
+}
 
+# 安装Python环境
+install_python
 
 # 启动Python HTTP服务器来托管content.json文件
 log "启动Web服务器..."
@@ -48,4 +66,3 @@ nohup python3 "${WebLogsPATH}/web_serve.py" > "${LogsPATH}/server.log" 2>&1 &
 # 记录服务器启动信息
 log "Web服务器已启动，正在端口7988上托管content.json文件。"
 log "访问 http://localhost:7988/content.json 查看文件。"
-
