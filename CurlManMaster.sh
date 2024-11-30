@@ -14,7 +14,7 @@ CURRENT_DIR=$(
 WebLogsPATH="${CURRENT_DIR}/web_logs"
 ConfigPATH="${CURRENT_DIR}/config"
 LogsPATH="${CURRENT_DIR}/logs"
-
+JSON_OUTPATH="${WebLogsPATH}/content.json"
 
 function log() {
     message="[Aspnmy Log]: $1"
@@ -34,35 +34,67 @@ function log() {
     esac
 }
 
+function output_results() {
+    local url=$1
+    local head_content=$2
+    local proxy=$3
+    local status=$4
+    local err_code=$5
+
+    local log_message="$url|$status|$head_content"
+    local json_output="{\"url\":\"$url\",\"head\":\"$head_content\",\"proxy\":\"$proxy\",\"title\":\"$status\",\"err_code\":\"$err_code\"}"
+
+    echo "$log_message" | tee -a "${LogsPATH}/content.log"
+    echo "$json_output" | tee -a "$JSON_OUTPATH"
+}
+
+function fetch_url() {
+    local url=$1
+    local proxy=$2
+    if [ -n "$proxy" ]; then
+        curl -x "$proxy" -sSL "$url"
+    else
+        curl -sSL "$url"
+    fi
+}
+
+function process_url() {
+    local url=$1
+    local proxy=$2
+    local content=$(fetch_url "$url" "$proxy")
+    if [ $? -eq 0 ]; then
+        log "成功：获取 $url 的内容成功."
+        local head_content=$(echo "$content" | grep -E '<[^>]*head[^>]*>' | sed 's/<head>/<head>\n/g' | sed 's/<\/head>/<\/head>\n/g' | sed -n '/<head>/,/<\/head>/p')
+        output_results "$url" "$head_content" "$proxy" "isOKK" "1001"
+    else
+        local head_content=""
+        output_results "$url" "$head_content" "$proxy" "isOFF" "1002"
+        log "失败：获取 $url 的内容失败.状态码:1002"
+    fi
+    echo "-----"
+}
+
 # 检查urls.txt文件是否存在
 URLS_FILE="${ConfigPATH}/urls.txt"
 if [ ! -f "$URLS_FILE" ]; then
-    log "错误：urls.txt文件不存在。"
+    log "错误：urls.txt文件不存在."
     exit 1
 fi
 
-JSON_OUTPUT="${WebLogsPATH}/content.json"
-
-# 读取urls.txt文件中的每个URL并执行curl命令
-while IFS= read -r url; do
-    if [ -z "$url" ]; then
-        log "忽略：跳过空行。"
-        continue
-    fi
-    log "开始：获取 $url 的内容..."
-    content=$(curl -sSL "$url")
-    if [ $? -eq 0 ]; then
-        log "成功：获取 $url 的内容成功。"
-        # 提取<head>标签的内容
-        head_content=$(echo "$content" | grep -E '<[^>]*head[^>]*>' | sed 's/<head>/<head>\n/g' | sed 's/<\/head>/<\/head>\n/g' | sed -n '/<head>/,/<\/head>/p')
-        # 构造JSON对象并追加到content.json
-        if [ -z "$head_content" ]; then
-            head_content="No head content found"
+PROXY_LIST="${ConfigPATH}/proxies.txt"
+if [ -s "$PROXY_LIST" ]; then
+    while IFS= read -r proxy; do
+        if [ -z "$proxy" ]; then
+            continue
         fi
-        echo "{\"url\":\"$url\",\"head\":\"$head_content\",\"title\":\"isOKK\",\"err_code\":\"1001\"}" | tee -a "$JSON_OUTPUT"
-    else
-        echo "{\"url\":\"\",\"head\":\"\",\"title\":\"isOFF\",\"err_code\":\"1002\"}" | tee -a "$JSON_OUTPUT"
-        log "失败：获取 $url 的内容失败。错误码:1002"
-    fi
-    echo "-----"
-done < "$URLS_FILE"
+        log "使用代理 $proxy 进行拨测..."
+        while IFS= read -r url; do
+            process_url "$url" "$proxy"
+        done < "$URLS_FILE"
+    done < "$PROXY_LIST"
+else
+    log "警告：代理列表文件不存在或为空,将使用本地设备进行访问."
+    while IFS= read -r url; do
+        process_url "$url" ""
+    done < "$URLS_FILE"
+fi
