@@ -14,10 +14,10 @@ www.example.com
 - 然后在你的服务器下运行下面这个代码,记得使用root权限,运行前确保已经安装了curl组件
 
 ```
-curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/master/CurlMan.sh -o CurlMan.sh  && bash CurlMan.sh
+curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/master/CurlManMaster.sh -o CurlManMaster.sh  && bash CurlManMaster.sh
 ```
 
-- 运行脚本后会保存一个logs文件,文件中能正确显示网站代码的为正确拨测
+- 运行脚本后会保存一个content.logs文件,文件中能正确显示网站代码的为正确拨测
 
 ### 2、关键词批量拨测：
 - 首先你先在自己的网站首页中插入一个约定的关键词
