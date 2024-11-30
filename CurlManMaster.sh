@@ -109,7 +109,7 @@ else
             log "url忽略：跳过空行。"
             continue
         fi
-        echo "url-lists:$URLS_FILE"
+
         process_url "$url" ""
     done < "$URLS_FILE"
 fi
