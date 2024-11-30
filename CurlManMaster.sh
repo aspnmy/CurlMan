@@ -62,16 +62,22 @@ function process_url() {
     local url=$1
     local proxy=$2
     local content
+    local timeout_msg="请求超时，未能在30秒内完成。"
+
     if [ -n "$proxy" ]; then
-        content=$(curl -x "$proxy" -sSL "$url" 2>&1)
+        # 使用timeout命令设置30秒超时
+        content=$(timeout 30 curl -x "$proxy" -sSL "$url" 2>&1)
     else
-        content=$(curl -sSL "$url" 2>&1)
+        content=$(timeout 30 curl -sSL "$url" 2>&1)
     fi
 
-    # 检查curl命令是否成功执行
-    if echo "$content" | grep -q "Failed to connect to"; then
+    # 检查curl命令是否因为超时而失败
+    if [ $? -eq 124 ]; then
+        log "失败：$timeout_msg"
+        output_results "$url" "网站响应超时,请稍后再试" "$proxy" "isOFF" "1003"
+    elif echo "$content" | grep -q "Failed to connect to"; then
         log "失败：无法连接到 $url 的服务器,可能被拦截了或者域名地址不正确,请查证后再试。"
-        output_results "$url" "" "$proxy" "isOFF" "1002"
+        output_results "$url" "失败：无法连接到 $url 的服务器,可能被拦截了或者域名地址不正确,请查证后再试。" "$proxy" "isOFF" "1002"
     else
         log "成功：获取 $url 的内容成功。"
         local head_content=$(echo "$content" | grep -E '<[^>]*head[^>]*>' | sed 's/<head>/<head>\n/g' | sed 's/<\/head>/<\/head>\n/g' | sed -n '/<head>/,/<\/head>/p')
