@@ -19,7 +19,7 @@ curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/CurlM
 
 - 运行脚本后会保存一个content.log的文件,文件中能正确显示网站代码的为正确拨测
 - 运行脚本后会保存一个CurlMan.log的文件,文件中能正确显示是否抓取网站成功
-![alt text](企业微信截图_17329585881191.png)
+![alt text](17329585881191.png)
 
 
 ### 2、关键词批量拨测：
