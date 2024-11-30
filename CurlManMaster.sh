@@ -72,13 +72,10 @@ function process_url() {
     if echo "$content" | grep -q "Failed to connect to"; then
         log "失败：无法连接到 $url 的服务器,可能被拦截了或者域名地址不正确,请查证后再试。"
         output_results "$url" "" "$proxy" "isOFF" "1002"
-    elif [ $? -eq 0 ]; then
+    else
         log "成功：获取 $url 的内容成功。"
         local head_content=$(echo "$content" | grep -E '<[^>]*head[^>]*>' | sed 's/<head>/<head>\n/g' | sed 's/<\/head>/<\/head>\n/g' | sed -n '/<head>/,/<\/head>/p')
         output_results "$url" "$head_content" "$proxy" "isOKK" "1001"
-    else
-        log "失败：获取 $url 的内容失败。可能被拦截了或者域名地址不正确,请查证后再试。"
-        output_results "$url" "" "$proxy" "isOFF" "1002"
     fi
     echo "-----"
 }
