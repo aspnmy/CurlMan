@@ -25,11 +25,11 @@ curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/CurlM
 ### 2、关键词批量拨测：
 - 首先你先在自己的网站首页中插入一个约定的关键词,比如
 ```
-<meta name="Aspnmy-CurlManMaster-Verification" content="输入需要被验证的关键词" />
+<meta name=\"Aspnmy-CurlManMaster-Verification\" content=\"需要验证的code\" />
 ```
 - 将以下代码添加到您的网站首页HTML代码的<head>标签与</head>标签之间,更新缓存以后
 
-- 使用下面的脚本运行拨测脚本主体,生成一个运行脚本后会保存一个content.logs的文件
+- 使用下面的脚本运行拨测脚本主体,生成一个运行脚本后会保存一个content.log的文件
 ```
 curl -sSL https://raw.githubusercontent.com/aspnmy/CurlMan/refs/heads/main/CurlManMaster.sh -o CurlManMaster.sh  && bash CurlManMaster.sh
 ```

@@ -46,8 +46,10 @@ while IFS= read -r url; do
     content=$(curl -sSL "$url")
     if [ $? -eq 0 ]; then
         log "成功：获取 $url 的内容成功。"
-        echo "内容如下："
-        echo "$content" | tee -a "${CURRENT_DIR}/content.log"
+        # 提取<head>标签的内容
+        head_content=$(echo "$content" | grep -E '<[^>]*head[^>]*>' | sed 's/<head>/<head>\n/g' | sed 's/<\/head>/<\/head>\n/g' | sed -n '/<head>/,/<\/head>/p')
+        echo "<head>内容如下："
+        echo "$url|对应的key是|$head_content" | tee -a "${CURRENT_DIR}/content.log"
     else
         log "失败：获取 $url 的内容失败。"
     fi
