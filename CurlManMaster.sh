@@ -61,15 +61,24 @@ function fetch_url() {
 function process_url() {
     local url=$1
     local proxy=$2
-    local content=$(fetch_url "$url" "$proxy")
-    if [ $? -eq 0 ]; then
-        log "成功：获取 $url 的内容成功."
+    local content
+    if [ -n "$proxy" ]; then
+        content=$(curl -x "$proxy" -sSL "$url" 2>&1)
+    else
+        content=$(curl -sSL "$url" 2>&1)
+    fi
+
+    # 检查curl命令是否成功执行
+    if echo "$content" | grep -q "Failed to connect to"; then
+        log "失败：无法连接到 $url 的服务器。"
+        output_results "$url" "" "$proxy" "isOFF" "1002"
+    elif [ $? -eq 0 ]; then
+        log "成功：获取 $url 的内容成功。"
         local head_content=$(echo "$content" | grep -E '<[^>]*head[^>]*>' | sed 's/<head>/<head>\n/g' | sed 's/<\/head>/<\/head>\n/g' | sed -n '/<head>/,/<\/head>/p')
         output_results "$url" "$head_content" "$proxy" "isOKK" "1001"
     else
-        local head_content=""
-        output_results "$url" "$head_content" "$proxy" "isOFF" "1002"
-        log "失败：获取 $url 的内容失败.状态码:1002"
+        log "失败：获取 $url 的内容失败。"
+        output_results "$url" "" "$proxy" "isOFF" "1002"
     fi
     echo "-----"
 }
